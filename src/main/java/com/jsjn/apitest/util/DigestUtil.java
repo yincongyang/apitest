@@ -1,5 +1,8 @@
 package com.jsjn.apitest.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Field;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -12,6 +15,8 @@ import java.util.TreeMap;
  * Created by yincongyang on 17/10/16.
  */
 public class DigestUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(DigestUtil.class);
     /**
      * 等于符号标志
      */
@@ -117,11 +122,11 @@ public class DigestUtil {
         Map<String, String> map = DigestUtil.objectToMap(obj);
         TreeMap<String, String> treeMap = treeMap(map, keys);
         String sortParams = mapToString(treeMap);
-        System.out.println("排序得到的参数串为： "+sortParams);
+        logger.info("排序得到的参数串为： {}",sortParams);
 
         //按照requsetType + Encodes.urlEncode(url) + Encodes.urlEncode(sortParams) 顺序组装待加签报文
         String sourceStr = requsetType + Encodes.urlEncode(URI) + Encodes.urlEncode(sortParams);
-        System.out.println("待加签报文为： "+sourceStr);
+        logger.info("待加签报文为： {}",sourceStr);
 
         return sourceStr;
     }

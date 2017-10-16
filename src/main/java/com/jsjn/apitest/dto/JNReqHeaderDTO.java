@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 /**
  * 金农网关响应系统级参数
- *
+ * <p>
  * Created by yincongyang on 17/10/16.
  */
-public class JNReqHeaderDTO implements Serializable {
+public class JNReqHeaderDTO<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,7 +21,7 @@ public class JNReqHeaderDTO implements Serializable {
 
     private String signature;
 
-    private String req_body;
+    private T req_body;
 
     public String getApi_key() {
         return api_key;
@@ -63,11 +63,11 @@ public class JNReqHeaderDTO implements Serializable {
         this.signature = signature;
     }
 
-    public String getReq_body() {
+    public T getReq_body() {
         return req_body;
     }
 
-    public void setReq_body(String req_body) {
+    public void setReq_body(T req_body) {
         this.req_body = req_body;
     }
 }

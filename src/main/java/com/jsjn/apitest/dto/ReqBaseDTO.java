@@ -5,14 +5,14 @@ package com.jsjn.apitest.dto;
  *
  * Created by yincongyang on 17/10/16.
  */
-public class ReqBaseDTO {
+public class ReqBaseDTO<T> {
 
     private String merchantId;
     private String subMerchantId;
     private String jsSeq;
     private String timestamp;
     private String transCode;
-    private String notifyContent;
+    private T notifyContent;
     private String digSign;
     private String version;
     private String reserved;
@@ -57,14 +57,6 @@ public class ReqBaseDTO {
         this.transCode = transCode;
     }
 
-    public String getNotifyContent() {
-        return notifyContent;
-    }
-
-    public void setNotifyContent(String notifyContent) {
-        this.notifyContent = notifyContent;
-    }
-
     public String getDigSign() {
         return digSign;
     }
@@ -87,5 +79,13 @@ public class ReqBaseDTO {
 
     public void setReserved(String reserved) {
         this.reserved = reserved;
+    }
+
+    public T getNotifyContent() {
+        return notifyContent;
+    }
+
+    public void setNotifyContent(T notifyContent) {
+        this.notifyContent = notifyContent;
     }
 }
