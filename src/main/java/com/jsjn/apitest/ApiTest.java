@@ -1,6 +1,6 @@
 package com.jsjn.apitest;
 
-import com.google.gson.Gson;
+import com.alibaba.fastjson.JSON;
 import com.jsjn.apitest.dto.JNReqHeaderDTO;
 import com.jsjn.apitest.dto.JNResHeaderDTO;
 import com.jsjn.apitest.dto.ReconciliationFileReadyDTO;
@@ -12,6 +12,8 @@ import com.jsjn.apitest.util.StringResponseHandle;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
@@ -35,41 +37,43 @@ public class ApiTest {
     public static void main(String[] args) throws Exception {
         logger.info("构造请求报文...");
 
-        Gson gson = new Gson();
-
         //组装业务字段
         ReconciliationFileReadyDTO rfrDto = buildReconciliationFileReady();
-        logger.info("业务字段： {}", gson.toJson(rfrDto));
+        logger.info("业务字段： {}", JSON.toJSONString(rfrDto));
 
         //加上结算平台通用报文头
         ReqBaseDTO rbDto = buildReqBase(rfrDto);
-        logger.info("业务报文： {}", gson.toJson(rbDto));
+        logger.info("业务报文： {}", JSON.toJSONString(rbDto));
 
         //加上金农API平台报文头
         JNReqHeaderDTO reqDto = buildJNReqHeader(rbDto);
-        logger.info("未加签报文： {}", gson.toJson(reqDto));
+        logger.info("未加签报文： {}", JSON.toJSONString(reqDto));
 
         //获取待签名字符串
         String sourceStr = DigestUtil.buildSourceStr("POST", URI_PATH, reqDto, "signature");
         logger.info("待签名字符串为： {}", sourceStr);
 
         //结算平台私钥加签
-        String signature = RSAUtil.sign(sourceStr, Keys.PRIVATE_KEY_1024_PKSC8);
+        String signature = RSAUtil.sign(sourceStr, Keys.JSPT_PRIVATE_KEY_2048_PKCS8);
         logger.info("得到的签名为： {}", signature);
 
         //设置签名
         reqDto.setSignature(signature);
-        logger.info("加签后报文为： {}", gson.toJson(reqDto));
+        logger.info("加签后报文为： {}", JSON.toJSONString(reqDto));
 
 
         //发送Http/Https请求
-        HttpUriRequest httpPost = RequestBuilder.post().setUri(URI_HOST + URI_PATH).build();
+        StringEntity entity = new StringEntity(JSON.toJSONString(reqDto),ContentType.APPLICATION_JSON);
+        HttpUriRequest httpPost = RequestBuilder.post()
+                .setUri(URI_HOST + URI_PATH)
+                .setEntity(entity)
+                .build();
         CloseableHttpClient client = HttpClients.createDefault();
 
         try {
             String resMsg = client.execute(httpPost, StringResponseHandle.INSTANCE);
 
-            JNResHeaderDTO resDto = gson.fromJson(resMsg, JNResHeaderDTO.class);
+            JNResHeaderDTO resDto = JSON.parseObject(resMsg, JNResHeaderDTO.class);
 
             //获取返回报文签名字段
             String resSignature = resDto.getSignature();
@@ -77,9 +81,9 @@ public class ApiTest {
             String resSourceStr = DigestUtil.buildSourceStr("POST", URI_PATH, resDto, "signature");
 
             //使用金农公钥验签
-            boolean isVerify = RSAUtil.verify(resSourceStr, Keys.PUBLIC_KEY_1024_PKCS8, resSignature);
+            boolean isVerify = RSAUtil.verify(resSourceStr, Keys.JN_PUBLIC_KEY_1024_PKCS8, resSignature);
 
-            logger.info("返回的报文为： {}", gson.toJson(resDto));
+            logger.info("返回的报文为： {}", JSON.toJSONString(resDto));
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

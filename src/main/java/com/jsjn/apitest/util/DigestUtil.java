@@ -1,5 +1,6 @@
 package com.jsjn.apitest.util;
 
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +28,7 @@ public class DigestUtil {
      */
     private static final String AND_SYMBOL = "&";
 
+
     /**
      * javaBean转化为Map<String,String>
      *
@@ -45,7 +47,15 @@ public class DigestUtil {
             Object fieldObj = field.get(obj);
             String fieldStr = "";
             if (null != fieldObj) {
-                fieldStr = fieldObj.toString();
+                if (fieldObj instanceof String) {
+                    fieldStr = fieldObj.toString();
+                } else if ((fieldObj instanceof Long) || (fieldObj instanceof Integer) || (fieldObj instanceof Float)
+                        || (fieldObj instanceof Double) || (fieldObj instanceof Boolean)) {
+                    fieldStr = String.valueOf(fieldObj);
+                } else {
+                    fieldStr = JSON.toJSONString(fieldObj);
+                }
+
             }
             if ("serialVersionUID".equals(field.getName())) {
                 continue;
@@ -110,24 +120,24 @@ public class DigestUtil {
      * 3.根据规则返回待加签报文
      *
      * @param requsetType 请求类型，GET/POST
-     * @param URI 请求的URl，如：/v1/custom/reconciliation_file_ready_notify
-     * @param obj 需要排序的javaBean
-     * @param keys 不参加排序的字段：默认为：signature
+     * @param URI         请求的URl，如：/v1/custom/reconciliation_file_ready_notify
+     * @param obj         需要排序的javaBean
+     * @param keys        不参加排序的字段：默认为：signature
      * @return 返回待加签报文
      * @throws Exception
      */
     public static String buildSourceStr(String requsetType, String URI, Object obj, String... keys) throws Exception {
+        StringBuilder result = new StringBuilder();
 
         //将除“signature”外的所有参数按key进行字典升序排列，并将排序后的参数(key=value)用&拼接起来
         Map<String, String> map = DigestUtil.objectToMap(obj);
         TreeMap<String, String> treeMap = treeMap(map, keys);
         String sortParams = mapToString(treeMap);
-        logger.info("排序得到的参数串为： {}",sortParams);
+        logger.info("排序得到的参数串为： {}", sortParams);
 
-        //按照requsetType + Encodes.urlEncode(url) + Encodes.urlEncode(sortParams) 顺序组装待加签报文
-        String sourceStr = requsetType + Encodes.urlEncode(URI) + Encodes.urlEncode(sortParams);
-        logger.info("待加签报文为： {}",sourceStr);
+        //按照requsetType + "&" + Encodes.urlEncode(url) + "&" + Encodes.urlEncode(sortParams) 顺序组装待加签报文
+        result.append(requsetType).append(AND_SYMBOL).append(Encodes.urlEncode(URI)).append(AND_SYMBOL).append(Encodes.urlEncode(sortParams));
 
-        return sourceStr;
+        return result.toString().trim();
     }
 }

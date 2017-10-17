@@ -5,15 +5,11 @@ package com.jsjn.apitest.util;
  * Created by yincongyang on 17/10/16.
  */
 public interface Keys {
-    String PUBLIC_KEY_2048_PKCS8 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvsb43fsvRoDXZV6DhI5Y"+
-            "6Shq63LBWZv/1XraNUVfwYIpLtioakxHgXu8RJHbq18Il0CIuJWIwmCoSBpP1Zsk"+
-            "VQJF5BA8+FDdOZcU65YvHkO/2sGysUC3pItUOTRbCu8d3VhxI5dlOoHvZk1TnWrj"+
-            "TPV2OTlVfxL2PGb93gyn0xpPBl7kGu+R9MMuQFX7QfF45RFpyla317q/A9G7Dwc9"+
-            "N8IyKrIl9LZuHCvg+fC6uS3xkVQaB0LaZ0hXNwMmfZ3EZVeJ1MPG+RHeA4H0tpsJ"+
-            "2kyeW/EMUDLtYjIf1M+FnAtKM1x7p+35rjeZD1pDbVluQFG0B8wNaodDdXYdESWK"+
-            "4wIDAQAB";
 
-    String PRIVATE_KEY_2048_PKCS8 = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC+xvjd+y9GgNdl" +
+    /**
+     * 结算平台私钥(模拟测试)
+     */
+    String JSPT_PRIVATE_KEY_2048_PKCS8 = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC+xvjd+y9GgNdl" +
             "XoOEjljpKGrrcsFZm//Veto1RV/Bgiku2KhqTEeBe7xEkdurXwiXQIi4lYjCYKhI" +
             "Gk/VmyRVAkXkEDz4UN05lxTrli8eQ7/awbKxQLeki1Q5NFsK7x3dWHEjl2U6ge9m" +
             "TVOdauNM9XY5OVV/EvY8Zv3eDKfTGk8GXuQa75H0wy5AVftB8XjlEWnKVrfXur8D" +
@@ -40,23 +36,12 @@ public interface Keys {
             "FJbKdYoSWTL7jXKMiaHCnkZvmwo7Uuz+oSk3hNWjCNOJU8fj/UaGUstsqZh6MGQ/" +
             "4+ZkVH1kPqHVbNHAq/wYetY=";
 
-    String PUBLIC_KEY_1024_PKCS8 = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDlwDhE6mCktK2m7d6U3lrQKWwW" +
+    /**
+     * 金农公钥(测试)
+     */
+    String JN_PUBLIC_KEY_1024_PKCS8 = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDlwDhE6mCktK2m7d6U3lrQKWwW" +
             "MepyFHXphWH6qu9UUvFJEGK/dMD0StTd5FAFSex6tHDJPvdwzCF2XlvW3wuotxhd" +
             "z515oqf0OLczea8Nonl22y2/RczjT/c4h+G9tR3W5pB6gtFz1QFVe/xbRUEwnQUE" +
             "GubHkbX3QPr1fi3yKwIDAQAB";
 
-    String PRIVATE_KEY_1024_PKSC8 = "MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAOXAOETqYKS0rabt" +
-            "3pTeWtApbBYx6nIUdemFYfqq71RS8UkQYr90wPRK1N3kUAVJ7Hq0cMk+93DMIXZe" +
-            "W9bfC6i3GF3PnXmip/Q4tzN5rw2ieXbbLb9FzONP9ziH4b21HdbmkHqC0XPVAVV7" +
-            "/FtFQTCdBQQa5seRtfdA+vV+LfIrAgMBAAECgYEA36zwG0gDptawaWAT3uNLjnWF" +
-            "YWZfVYlN8neFGEHqlzHY7sUhHjxQzoU8EHsC3ONHc37Qf1zqEcrqmQ7sYpjsAxFO" +
-            "utO3suoJdbRkTfnivaS2osOfyXG4acIPxuOa9BBNN0esqx1CBfNUS3GulcVmY+jb" +
-            "ICJjA/dz8yuKz89x40ECQQD3SXa+Nq5Ee7sffYbGEJ2+nE4Qsdb6XHm7QV1njGjm" +
-            "D5sqxM/5EmkN+nmclTt2+sA+rg8zcSi2dxfmB1GWWgKZAkEA7diUZ7AMWApcQTpO" +
-            "nNu7DOqgbaU+5+kvM0D3V9siZsNZhGkAN31jYR8phs2qGfI9ZkF6moHXLdW5Vj3K" +
-            "OM4ZYwJAddmEBpjGqoqRHivTjBclJk8VgS1P99cUiKJZIl0vLN0pJNPRDbGxcWD6" +
-            "jh4szcIo1nZbdjeqoHLXZ9/7CP1ymQJBANLP7Hoa6FYAmNSXwaX2fExuidOla6RS" +
-            "YqujIZiVemBrNaTPDIoicTtcS4pYMDTfKNzBnNHl07uke6mdCuhehNECQQDdqz/J" +
-            "vf0u0TtaXAozBJHbb0vwg+EALnARRqU2LRODZBKVZW92PT0mXAU3LSwxhp9GBHcf" +
-            "gZtU6kLdV+dz2dDy";
 }

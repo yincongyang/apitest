@@ -10,8 +10,8 @@ public class ReqBaseDTO<T> {
     private String merchantId;
     private String subMerchantId;
     private String jsSeq;
-    private String timestamp;
     private String transCode;
+    private String timestamp;
     private T notifyContent;
     private String digSign;
     private String version;

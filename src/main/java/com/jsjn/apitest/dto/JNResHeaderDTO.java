@@ -7,7 +7,8 @@ import java.io.Serializable;
  *
  * Created by yincongyang on 17/10/16.
  */
-public class JNResHeaderDTO implements Serializable {
+public class JNResHeaderDTO<T> implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     private String api_key;
@@ -20,7 +21,7 @@ public class JNResHeaderDTO implements Serializable {
 
     private String signature;
 
-    private String res_data;
+    private T resp_body;
 
     public String getApi_key() {
         return api_key;
@@ -62,12 +63,12 @@ public class JNResHeaderDTO implements Serializable {
         this.signature = signature;
     }
 
-    public String getRes_data() {
-        return res_data;
+    public T getResp_body() {
+        return resp_body;
     }
 
-    public void setRes_data(String res_data) {
-        this.res_data = res_data;
+    public void setResp_body(T resp_body) {
+        this.resp_body = resp_body;
     }
 }
 
